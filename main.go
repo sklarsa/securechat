@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"crypto/rsa"
+	"crypto/x509"
 	"encoding/json"
 
 	shell "github.com/ipfs/go-ipfs-api"
@@ -23,6 +25,15 @@ func GetMessage(sh *shell.Shell, cid string) (Message, string, error) {
 		return Message{}, "", err
 	}
 	return msg.Message, msg.ParentCid, nil
+}
+
+type User struct {
+	Id             string
+	PublicKeyBytes []byte
+}
+
+func (u *User) PublicKey() (*rsa.PublicKey, error) {
+	return x509.ParsePKCS1PublicKey(u.PublicKeyBytes)
 }
 
 type Message struct {
@@ -86,13 +97,13 @@ func main() {
 	sh := shell.NewShell("http://localhost:5001")
 	c := NewChannel(sh, "my channel")
 
-	msg := Message{User: "me", Text: "hello!"}
-	c.Write(msg)
+	c.Write(Message{User: "me", Text: "hello!"})
+	c.Write(Message{User: "me", Text: "World!"})
 
 	ch := make(chan Message)
 	go func() { c.Read(sh, ch) }()
 
-	msg2 := <-ch
-	println(msg2.Text)
-
+	for elem := range ch {
+		println(elem.User, elem.Text)
+	}
 }
