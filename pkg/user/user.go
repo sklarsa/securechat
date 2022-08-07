@@ -10,7 +10,7 @@ import (
 )
 
 type User struct {
-	Id             string
+	Name           string
 	PublicKeyBytes []byte
 	PeerId         string
 }
@@ -19,7 +19,7 @@ func (u *User) PublicKey() (*rsa.PublicKey, error) {
 	return x509.ParsePKCS1PublicKey(u.PublicKeyBytes)
 }
 
-func CreateUser(id string, sh *shell.Shell) (*User, *rsa.PrivateKey, error) {
+func CreateUser(name string, sh *shell.Shell) (*User, *rsa.PrivateKey, error) {
 	// Get current user node id
 	idReq, err := sh.ID()
 	if err != nil {
@@ -34,7 +34,7 @@ func CreateUser(id string, sh *shell.Shell) (*User, *rsa.PrivateKey, error) {
 
 	// Return user and private key
 	return &User{
-		Id:             id,
+		Name:           name,
 		PublicKeyBytes: x509.MarshalPKCS1PublicKey(&privateKey.PublicKey),
 		PeerId:         idReq.ID,
 	}, privateKey, nil
