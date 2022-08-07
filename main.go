@@ -5,7 +5,7 @@ import (
 	"crypto/rsa"
 
 	shell "github.com/ipfs/go-ipfs-api"
-	"github.com/sklarsa/securechat/pkg/securechat/user"
+	"github.com/sklarsa/securechat/pkg/user"
 )
 
 func main() {
