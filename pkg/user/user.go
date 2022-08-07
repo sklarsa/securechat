@@ -48,6 +48,7 @@ func (u *User) Encrypt(data []byte) ([]byte, error) {
 	if err != nil {
 		return out, err
 	}
+
 	encryptedBytes, err := rsa.EncryptOAEP(
 		sha256.New(),
 		rand.Reader,

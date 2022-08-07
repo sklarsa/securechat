@@ -13,3 +13,8 @@ Currently, only text messaging will be supported, but the aim is to support mult
 ## Questions
 
 1. Use built-in ipfs/ipns keystore for identity or a separate private key managed by this executable?
+2. Which serialization format to use for messages?  Include public key with message (or at least a pointer to it)?
+    a. Json
+    b. Protobuf (<https://github.com/golang/protobuf>)
+    c. gob (<https://pkg.go.dev/encoding/gob>)
+3. If using pub/priv key encryption, how to support channels with multiple users?
